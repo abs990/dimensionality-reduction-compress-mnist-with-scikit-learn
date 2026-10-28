@@ -49,8 +49,10 @@ def compress(X, n_components, random_state=42):
     pca = fit_pca(X, n_components, random_state)
     return pca, pca.transform(X)
 
-# Step 6 - reconstruction_error (not yet solved)
-# TODO: implement
+# Step 6 - reconstruction_error
+def reconstruction_error(pca, X):
+    # mean squared per-pixel error between X and its PCA reconstruction.
+    return float(np.mean((X - pca.inverse_transform(pca.transform(X))) ** 2))
 
 # Step 7 - compression_ratio (not yet solved)
 # TODO: implement
