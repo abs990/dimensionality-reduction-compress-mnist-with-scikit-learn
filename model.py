@@ -69,8 +69,16 @@ def randomized_pca(X, n_components, random_state=42):
         "variance_gap": float(np.abs(pca.explained_variance_ratio_.sum() - compress_pca.explained_variance_ratio_.sum()))
     }
 
-# Step 9 - incremental_pca (not yet solved)
-# TODO: implement
+# Step 9 - incremental_pca
+from sklearn.decomposition import IncrementalPCA
+
+def incremental_pca(X, n_components, n_batches=10):
+    # IncrementalPCA fitted batch by batch with partial_fit.
+    ipca = IncrementalPCA(n_components=n_components)
+    batches = np.array_split(X, n_batches)
+    for batch in batches:
+        ipca.partial_fit(batch)
+    return ipca
 
 # Step 10 - random_projection (not yet solved)
 # TODO: implement
