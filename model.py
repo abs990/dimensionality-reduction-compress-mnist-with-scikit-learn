@@ -145,8 +145,29 @@ def tsne_map(X, y, n=1000, random_state=42):
         "separation": np.mean(pdist(centroids)) / np.mean(within_class_distances)
     }
 
-# Step 13 - classifier_on_compressed (not yet solved)
-# TODO: implement
+# Step 13 - classifier_on_compressed
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+
+def classifier_on_compressed(X, y, n_components, test_size=0.25, random_state=42):
+    # raw vs PCA-feature logistic regression on a held-out split; PCA fitted on the training split only.
+    result = {}
+    
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+    
+    logReg = LogisticRegression(max_iter=1000)
+    logReg.fit(X_train, y_train)
+    result["raw_accuracy"] = logReg.score(X_test, y_test)
+
+    pca = fit_pca(X_train, n_components, random_state)
+    pca_train = pca.transform(X_train)
+    pca_test = pca.transform(X_test)
+    logReg.fit(pca_train, y_train)
+    result["pca_accuracy"] = logReg.score(pca_test, y_test)
+
+    result["n_features"] = (X_train.shape[1], n_components)
+
+    return result
 
 # Step 14 - pca_classifier_pipeline (not yet solved)
 # TODO: implement
