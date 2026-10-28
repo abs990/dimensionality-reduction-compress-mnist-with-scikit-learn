@@ -30,8 +30,10 @@ from sklearn.decomposition import PCA
 def fit_pca(X, n_components=None, random_state=42):
     return PCA(n_components=n_components, random_state=random_state).fit(X)
 
-# Step 3 - components_for_variance (not yet solved)
-# TODO: implement
+# Step 3 - components_for_variance
+def components_for_variance(pca, threshold=0.95):
+    # first index where the cumulative explained variance reaches threshold, plus one.
+    return 1 + int(np.argmax(np.cumsum(pca.explained_variance_ratio_) >= threshold))
 
 # Step 4 - explained_variance_curve (not yet solved)
 # TODO: implement
