@@ -169,8 +169,14 @@ def classifier_on_compressed(X, y, n_components, test_size=0.25, random_state=42
 
     return result
 
-# Step 14 - pca_classifier_pipeline (not yet solved)
-# TODO: implement
+# Step 14 - pca_classifier_pipeline
+from sklearn.pipeline import make_pipeline
+
+def pca_classifier_pipeline(variance=0.95, random_state=42):
+    return make_pipeline(
+        PCA(n_components=variance), 
+        LogisticRegression(max_iter=2000)
+    )
 
 # Step 15 - save_and_reload_pipeline (not yet solved)
 # TODO: implement
