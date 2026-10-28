@@ -80,8 +80,29 @@ def incremental_pca(X, n_components, n_batches=10):
         ipca.partial_fit(batch)
     return ipca
 
-# Step 10 - random_projection (not yet solved)
-# TODO: implement
+# Step 10 - random_projection
+from sklearn.random_projection import GaussianRandomProjection
+
+def random_projection(X, n_components, random_state=42, n_pairs=500):
+    # GaussianRandomProjection; distance-ratio statistics on random pairs.
+    result = {}
+
+    grp = GaussianRandomProjection(n_components=n_components, random_state=random_state).fit(X)
+    Xr = grp.transform(X)
+
+    rng = np.random.default_rng(random_state)
+    indices = np.array(rng.integers(0, len(X), (n_pairs, 2)))
+    mask = (indices[:, 0] != indices[:, 1]) & (indices[:, 1] != 0)
+    i = indices[mask, 0]
+    j = indices[mask, 1]
+    
+    ratios = np.array([np.linalg.norm(Xr[i] - Xr[j]) / np.linalg.norm(X[i] - X[j]) for i,j in zip(indices[mask, 0], indices[mask, 1])])
+
+    result["X_reduced"] = Xr
+    result["mean_ratio"] = ratios.mean() if len(ratios) else np.nan
+    result["max_distortion"] = np.max(np.abs(ratios - 1))
+
+    return result
 
 # Step 11 - unroll_swiss_roll (not yet solved)
 # TODO: implement
