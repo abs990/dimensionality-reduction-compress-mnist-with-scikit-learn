@@ -35,8 +35,13 @@ def components_for_variance(pca, threshold=0.95):
     # first index where the cumulative explained variance reaches threshold, plus one.
     return 1 + int(np.argmax(np.cumsum(pca.explained_variance_ratio_) >= threshold))
 
-# Step 4 - explained_variance_curve (not yet solved)
-# TODO: implement
+# Step 4 - explained_variance_curve
+def explained_variance_curve(pca, ks):
+    # {k: cumulative explained variance of the first k components, rounded to 4 decimals}.
+    c_sum = np.cumsum(pca.explained_variance_ratio_)
+    return {
+        k: round(float(c_sum[k - 1]), 4) for k in ks
+    }
 
 # Step 5 - compress (not yet solved)
 # TODO: implement
