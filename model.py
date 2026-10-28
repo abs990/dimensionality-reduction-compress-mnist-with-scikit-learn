@@ -54,8 +54,10 @@ def reconstruction_error(pca, X):
     # mean squared per-pixel error between X and its PCA reconstruction.
     return float(np.mean((X - pca.inverse_transform(pca.transform(X))) ** 2))
 
-# Step 7 - compression_ratio (not yet solved)
-# TODO: implement
+# Step 7 - compression_ratio
+def compression_ratio(X, X_reduced):
+    # original width / reduced width, rounded to 2 decimals.
+    return round(float(X.shape[1] / X_reduced.shape[1]), 2)
 
 # Step 8 - randomized_pca (not yet solved)
 # TODO: implement
