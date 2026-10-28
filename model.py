@@ -59,8 +59,15 @@ def compression_ratio(X, X_reduced):
     # original width / reduced width, rounded to 2 decimals.
     return round(float(X.shape[1] / X_reduced.shape[1]), 2)
 
-# Step 8 - randomized_pca (not yet solved)
-# TODO: implement
+# Step 8 - randomized_pca
+def randomized_pca(X, n_components, random_state=42):
+    # PCA(svd_solver='randomized'); return {'pca': ..., 'variance_gap': |sum ratio - exact sum ratio|}.
+    compress_pca, _ = compress(X, n_components, random_state)
+    pca = PCA(n_components, svd_solver="randomized", random_state=random_state).fit(X)
+    return {
+        "pca": pca,
+        "variance_gap": float(np.abs(pca.explained_variance_ratio_.sum() - compress_pca.explained_variance_ratio_.sum()))
+    }
 
 # Step 9 - incremental_pca (not yet solved)
 # TODO: implement
