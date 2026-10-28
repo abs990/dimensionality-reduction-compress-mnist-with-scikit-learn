@@ -104,8 +104,27 @@ def random_projection(X, n_components, random_state=42, n_pairs=500):
 
     return result
 
-# Step 11 - unroll_swiss_roll (not yet solved)
-# TODO: implement
+# Step 11 - unroll_swiss_roll
+from sklearn.datasets import make_swiss_roll
+from sklearn.manifold import LocallyLinearEmbedding
+
+def unroll_swiss_roll(n_samples=1000, random_state=42):
+    # make_swiss_roll + LocallyLinearEmbedding(2, n_neighbors=10); report correlation with t.
+    X, t = make_swiss_roll(
+        n_samples=n_samples, 
+        noise=0.2, 
+        random_state=random_state
+    )
+
+    X_2d = LocallyLinearEmbedding(n_components=2, n_neighbors=10, random_state=random_state).fit_transform(X)
+
+    return {
+        "X_2d": X_2d,
+        "t_correlation": float(np.max(np.maximum(
+            np.abs(np.corrcoef(t, X_2d[:, 0])),
+            np.abs(np.corrcoef(t, X_2d[:, 1]))
+        )))
+    }
 
 # Step 12 - tsne_map (not yet solved)
 # TODO: implement
