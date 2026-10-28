@@ -126,8 +126,24 @@ def unroll_swiss_roll(n_samples=1000, random_state=42):
         )))
     }
 
-# Step 12 - tsne_map (not yet solved)
-# TODO: implement
+# Step 12 - tsne_map
+from sklearn.manifold import TSNE
+from scipy.spatial.distance import pdist
+
+def tsne_map(X, y, n=1000, random_state=42):
+    # TSNE(2, init='pca'); return X_2d and a between/within class separation ratio.
+    X_2d = TSNE(n_components=2, init="pca", random_state=random_state).fit_transform(X[:n])
+    y_new = y[:n]
+
+    classes = np.unique(y_new)
+    centroids = [np.mean(X_2d[y_new == i], axis= 0) for i in classes]
+
+    within_class_distances = np.array([np.linalg.norm(X_2d[y_new == c] - centroids[c], axis=1).mean() for c in classes])
+
+    return {
+        "X_2d": X_2d,
+        "separation": np.mean(pdist(centroids)) / np.mean(within_class_distances)
+    }
 
 # Step 13 - classifier_on_compressed (not yet solved)
 # TODO: implement
