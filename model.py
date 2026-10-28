@@ -24,8 +24,11 @@ def load_mnist_subset(n=3000):
 
     return x_train.astype(np.float64), y_train.astype(np.int64)
 
-# Step 2 - fit_pca (not yet solved)
-# TODO: implement
+# Step 2 - fit_pca
+from sklearn.decomposition import PCA
+
+def fit_pca(X, n_components=None, random_state=42):
+    return PCA(n_components=n_components, random_state=random_state).fit(X)
 
 # Step 3 - components_for_variance (not yet solved)
 # TODO: implement
